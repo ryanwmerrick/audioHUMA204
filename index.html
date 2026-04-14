@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Classical Audio Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header>
+      <h1>Classical Audio Quiz</h1>
+      <p>Listen to a random clip and choose the correct work.</p>
+    </header>
+
+    <section class="config-panel">
+      <label for="clipLength"><span class="icon">⏱</span> Clip length:</label>
+      <select id="clipLength">
+        <option value="5">5 seconds</option>
+        <option value="10" selected>10 seconds</option>
+        <option value="15">15 seconds</option>
+        <option value="20">20 seconds</option>
+      </select>
+
+      <label for="answerMode">Answer mode:</label>
+      <select id="answerMode">
+        <option value="multiple" selected>Multiple choice</option>
+        <option value="text">Type answer</option>
+      </select>
+
+      <label for="answerCount">Answer options:</label>
+      <select id="answerCount">
+        <option value="4" selected>4 options</option>
+        <option value="6">6 options</option>
+        <option value="all">All options</option>
+      </select>
+
+      <button id="startQuiz">Start Quiz</button>
+    </section>
+
+    <section class="status-panel">
+      <div class="scoreboard">
+        <span>Round: <strong id="roundCount">0</strong></span>
+        <span>Correct: <strong id="scoreCount">0</strong> / <strong id="totalCount">0</strong></span>
+      </div>
+      <div id="message" class="message">Click Start Quiz to begin.</div>
+    </section>
+
+    <section class="audio-panel player-panel">
+      <button id="playClip" disabled>Play</button>
+      <button id="stopClip" disabled>Stop</button>
+      <button id="restartClip" disabled>Restart</button>
+      <button id="skipClip" disabled>Skip</button>
+      <div class="progress-panel">
+        <div class="progress-labels">
+          <span id="currentTime">0:00</span>
+          <span id="remainingTime">0:00</span>
+        </div>
+        <input id="audioProgress" class="audio-progress" type="range" min="0" max="100" value="0" step="0.1" disabled />
+      </div>
+      <audio id="audioPlayer" preload="metadata"></audio>
+    </section>
+
+    <section class="answer-panel">
+      <div id="textAnswerPanel" class="text-answer-panel hidden">
+        <label for="typedField">Write answer for:</label>
+        <select id="typedField">
+          <option value="all" selected>Full title</option>
+          <option value="artist">Artist / composer</option>
+          <option value="piece">Piece / work</option>
+          <option value="movement">Movement / aria</option>
+        </select>
+        <input id="textAnswer" type="text" placeholder="Type your answer here…" autocomplete="off" />
+        <button id="submitAnswer">Submit</button>
+      </div>
+
+      <section class="choices-panel">
+        <div id="choicesContainer" class="choice-grid"></div>
+      </section>
+
+      <div class="answer-footer">
+        <button id="nextClip" class="hidden" disabled>Next Clip</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

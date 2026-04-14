@@ -1,0 +1,251 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-shell {
+  width: min(1024px, calc(100vw - 2rem));
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 24px;
+  background: radial-gradient(circle at top, rgba(96, 165, 250, 0.12), transparent 40%),
+    linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  box-shadow: 0 20px 80px rgba(15, 23, 42, 0.45);
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+header p {
+  margin: 0 0 1.75rem;
+  max-width: 640px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.config-panel,
+.audio-panel,
+.status-panel,
+.answer-panel,
+.choices-panel {
+  margin-bottom: 2rem;
+}
+
+.config-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.audio-panel {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  overflow-x: auto;
+}
+
+.progress-panel {
+  display: grid;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 220px;
+  flex: 1;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.audio-progress {
+  width: 100%;
+  height: 0.45rem;
+  appearance: none;
+  background: rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+}
+
+.audio-progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.18);
+}
+
+.audio-progress:disabled {
+  opacity: 0.75;
+}
+
+.answer-panel {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1rem 0.5rem;
+}
+
+.config-panel label,
+.config-panel select,
+.config-panel button {
+  font-size: 0.95rem;
+}
+
+select,
+button {
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  background: rgba(148, 163, 184, 0.12);
+  color: #f8fafc;
+}
+
+button {
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(96, 165, 250, 0.16);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.scoreboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: #94a3b8;
+}
+
+.message {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border-radius: 20px;
+  background: rgba(30, 41, 59, 0.75);
+  color: #e2e8f0;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.text-answer-panel {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audio-panel button {
+  min-width: auto;
+  padding: 0.55rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .text-answer-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-panel {
+    justify-content: flex-start;
+  }
+}
+
+.text-answer-panel.hidden {
+  display: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.answer-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.text-answer-panel input,
+.text-answer-panel select {
+  min-width: 0;
+}
+
+.text-answer-panel input {
+  padding: 0.9rem 1rem;
+}
+
+.choice-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  color: #f8fafc;
+  transition: transform 0.1s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.choice-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.65);
+}
+
+.choice-button.correct {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.55);
+}
+
+.choice-button.wrong {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+@media (max-width: 540px) {
+  .app-shell {
+    padding: 1.5rem;
+  }
+
+  .config-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
