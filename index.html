@@ -13,8 +13,14 @@
       <p>Listen to a random clip and choose the correct work.</p>
     </header>
 
-    <section class="config-panel">
-      <label for="clipLength"><span class="icon">⏱</span> Clip length:</label>
+    <section class="tabs">
+      <button id="quizTab" class="tab active">Quiz</button>
+      <button id="studyTab" class="tab">Study</button>
+    </section>
+
+    <section class="quiz-view">
+      <section class="config-panel">
+        <label for="clipLength"><span class="icon">⏱</span> Clip length:</label>
       <select id="clipLength">
         <option value="5">5 seconds</option>
         <option value="10" selected>10 seconds</option>
@@ -81,6 +87,15 @@
       <div class="answer-footer">
         <button id="nextClip" class="hidden" disabled>Next Clip</button>
       </div>
+    </section>
+    </section>
+
+    <section class="study-view hidden">
+      <div class="study-header">
+        <h2>Study Mode</h2>
+        <p>Listen to each song and scrub through the full track to help memorize them.</p>
+      </div>
+      <div id="studyListContainer" class="study-list"></div>
     </section>
   </main>
 

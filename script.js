@@ -11,6 +11,11 @@ const skipClipButton = document.getElementById('skipClip');
 const audioProgress = document.getElementById('audioProgress');
 const currentTimeEl = document.getElementById('currentTime');
 const remainingTimeEl = document.getElementById('remainingTime');
+const quizTabButton = document.getElementById('quizTab');
+const studyTabButton = document.getElementById('studyTab');
+const quizView = document.querySelector('.quiz-view');
+const studyView = document.querySelector('.study-view');
+const studyListContainer = document.getElementById('studyListContainer');
 const textAnswerPanel = document.getElementById('textAnswerPanel');
 const startQuizButton = document.getElementById('startQuiz');
 const nextClipButton = document.getElementById('nextClip');
@@ -131,6 +136,7 @@ let selectedAnswerIndex = null;
 let clipEndTimeout = null;
 let clipStartTime = 0;
 let clipEndTime = 0;
+let studyAudioElements = [];
 
 function shuffle(array) {
   return array
@@ -264,6 +270,126 @@ function setAudioTransportState(enabled) {
   skipClipButton.disabled = !enabled;
 }
 
+function showQuizTab() {
+  quizTabButton.classList.add('active');
+  studyTabButton.classList.remove('active');
+  quizView.classList.remove('hidden');
+  studyView.classList.add('hidden');
+}
+
+function showStudyTab() {
+  quizTabButton.classList.remove('active');
+  studyTabButton.classList.add('active');
+  quizView.classList.add('hidden');
+  studyView.classList.remove('hidden');
+}
+
+function renderStudyList() {
+  studyListContainer.innerHTML = '';
+  studyAudioElements = [];
+
+  songs.forEach((song, index) => {
+    const item = document.createElement('article');
+    item.className = 'study-item';
+
+    const title = document.createElement('div');
+    title.className = 'study-title';
+    title.textContent = song.title;
+
+    const controlsRow = document.createElement('div');
+    controlsRow.className = 'study-controls-row';
+
+    const audio = document.createElement('audio');
+    audio.src = song.file;
+    audio.preload = 'metadata';
+
+    const playButton = document.createElement('button');
+    playButton.type = 'button';
+    playButton.textContent = 'Play';
+
+    const pauseButton = document.createElement('button');
+    pauseButton.type = 'button';
+    pauseButton.textContent = 'Pause';
+
+    const progress = document.createElement('input');
+    progress.type = 'range';
+    progress.className = 'study-progress';
+    progress.min = '0';
+    progress.max = '100';
+    progress.value = '0';
+
+    const timeLabel = document.createElement('span');
+    timeLabel.className = 'study-time';
+    timeLabel.textContent = '0:00 / 0:00';
+
+    playButton.addEventListener('click', () => {
+      studyAudioElements.forEach((other) => {
+        if (other !== audio) {
+          other.pause();
+        }
+      });
+      audio.play();
+    });
+
+    pauseButton.addEventListener('click', () => {
+      audio.pause();
+    });
+
+    progress.addEventListener('input', () => {
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      if (!isNaN(audio.duration)) {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progress.value = String(percent);
+        timeLabel.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+      }
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      timeLabel.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+    });
+
+    audio.addEventListener('ended', () => {
+      progress.value = '100';
+    });
+
+    controlsRow.appendChild(playButton);
+    controlsRow.appendChild(pauseButton);
+    controlsRow.appendChild(progress);
+    controlsRow.appendChild(timeLabel);
+    item.appendChild(title);
+    item.appendChild(controlsRow);
+    item.appendChild(audio);
+    studyListContainer.appendChild(item);
+    studyAudioElements.push(audio);
+  });
+}
+
+function setActiveTab(tabName) {
+  if (tabName === 'study') {
+    showStudyTab();
+  } else {
+    showQuizTab();
+  }
+}
+
+function pauseAllStudyAudio() {
+  studyAudioElements.forEach((audio) => audio.pause());
+}
+
+function updateAnswerModeUI() {
+  const textMode = answerModeSelect.value === 'text';
+  textAnswerPanel.classList.toggle('hidden', !textMode);
+  answerCountSelect.disabled = textMode;
+  if (textMode) {
+    choicesContainer.innerHTML = '';
+  }
+}
+
 function disableAnswerButtons(disabled) {
   const buttons = choicesContainer.querySelectorAll('button');
   buttons.forEach((button) => {
@@ -395,6 +521,7 @@ function chooseNewClip() {
   nextClipButton.disabled = true;
   nextClipButton.classList.add('hidden');
   setAudioTransportState(true);
+  audioProgress.disabled = false;
   updateAudioProgress();
   const promptText = answerModeSelect.value === 'text'
     ? `Listen to the clip and type the ${typedFieldSelect.options[typedFieldSelect.selectedIndex].text.toLowerCase()}.`
@@ -472,6 +599,7 @@ function finishQuiz() {
   skipClipButton.disabled = true;
   submitAnswerButton.disabled = true;
   textAnswerInput.disabled = true;
+  audioProgress.disabled = true;
   clipLengthSelect.disabled = false;
   answerModeSelect.disabled = false;
   answerCountSelect.disabled = answerModeSelect.value === 'text';
@@ -529,6 +657,15 @@ textAnswerInput.addEventListener('keydown', (event) => {
 audioPlayer.addEventListener('timeupdate', updateAudioProgress);
 audioPlayer.addEventListener('pause', updateAudioProgress);
 
+quizTabButton.addEventListener('click', () => {
+  setActiveTab('quiz');
+  pauseAllStudyAudio();
+});
+studyTabButton.addEventListener('click', () => {
+  setActiveTab('study');
+  renderStudyList();
+});
+
 audioProgress.addEventListener('input', () => {
   if (!currentSong) return;
   const duration = Math.max(0, clipEndTime - clipStartTime);
@@ -538,4 +675,5 @@ audioProgress.addEventListener('input', () => {
 });
 
 updateAnswerModeUI();
+renderStudyList();
 setMessage('Click Start Quiz to begin.', 'neutral');
