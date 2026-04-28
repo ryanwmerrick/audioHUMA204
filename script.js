@@ -125,6 +125,41 @@ const songs = [
     movement: 'Prelude',
     file: 'audio/Tristan und Isolde, Act I_ Prelude_spotdown.org.mp3',
   },
+  {
+    title: 'Machaut, Messe de Nostre Dame: Kyrie I',
+    artist: 'Machaut',
+    piece: 'Messe de Nostre Dame',
+    movement: 'Kyrie I',
+    file: 'audio/Messe de Nostre Dame_ Kyrie I_spotdown.org.mp3',
+  },
+  {
+    title: 'Josquin, Ave Maria, Virgo Serena',
+    artist: 'Josquin',
+    piece: 'Ave Maria, Virgo Serena',
+    movement: 'Ave Maria, Virgo Serena',
+    file: 'audio/Ave Maria … Virgo serena_spotdown.org.mp3',
+  },
+  {
+    title: 'Weelkes, As Vesta Was From Latmos Hill Descending',
+    artist: 'Weelkes',
+    piece: 'As Vesta Was From Latmos Hill Descending',
+    movement: 'As Vesta Was From Latmos Hill Descending',
+    file: 'audio/As Vesta Was, From Latmos Hill Descending_spotdown.org.mp3',
+  },
+  {
+    title: 'Vivaldi, The Four Seasons: Spring',
+    artist: 'Vivaldi',
+    piece: 'The Four Seasons',
+    movement: 'Spring',
+    file: 'audio/The Four Seasons, Violin Concerto in E Major, Op. 8 No. 1, RV 269 Spring I. Allegro.mp3',
+  },
+  {
+    title: 'Bach, Fugue in G Minor',
+    artist: 'Bach',
+    piece: 'Fugue in G Minor',
+    movement: 'Fugue in G Minor',
+    file: 'audio/Fugue in G Minor, BWV 578, Little Fugue.mp3',
+  },
 ];
 
 let currentSong = null;
